@@ -1,11 +1,12 @@
-import Layout from "../../../components/Layout";
+import Layout from "@/components/Layout";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-import Post from "../../../components/Post";
+import Post from "@/components/Post";
 
-import { POSTS_PER_PAGE } from "../../../config";
+import { POSTS_PER_PAGE } from "@/config/index";
+import Pagination from "@/components/Pagination";
 
 export default function BlogPage({ posts, numPages, currentPage }) {
   return (
@@ -16,6 +17,8 @@ export default function BlogPage({ posts, numPages, currentPage }) {
           <Post post={post} key={index} />
         ))}
       </div>
+
+      <Pagination currentPage={currentPage} numPages={numPages} />
     </Layout>
   );
 }
