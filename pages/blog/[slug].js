@@ -3,8 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import marked from "marked";
 import Link from "next/link";
-import Layout from "../../components/Layout";
-import CategoryLabel from "../../components/CategoryLabel";
+import Layout from "@/components/Layout";
+import CategoryLabel from "@/components/CategoryLabel";
 
 const PostPage = ({ frontmatter, content, slug }) => {
   const { title, date, category, cover_image, author, author_image } =
