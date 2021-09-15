@@ -1,10 +1,9 @@
 import Layout from "@/components/Layout";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+
 import Link from "next/link";
 import Post from "@/components/Post";
-import { sortByDate } from "@/utils/index";
+
+import { getPost } from "@/lib/posts";
 
 export default function HomePage({ posts }) {
   return (
@@ -25,27 +24,7 @@ export default function HomePage({ posts }) {
 }
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join("posts"));
-  const posts = files.map((filename) => {
-    //remove .md from file names to create a slug
-    const slug = filename.replace(".md", "");
-
-    //Read data in files
-    const markdownWithMeta = fs.readFileSync(
-      path.join("posts", filename), // file path
-      "utf-8"
-    );
-
-    //converting read .md files to json
-    const { data: frontmatter } = matter(markdownWithMeta);
-
-    return {
-      slug,
-      frontmatter,
-    };
-  });
-
   return {
-    props: { posts: posts.sort(sortByDate).slice(0, 6) },
+    props: { posts: getPost().slice(0, 6) },
   };
 }
