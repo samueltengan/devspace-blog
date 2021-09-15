@@ -1,12 +1,12 @@
-import Layout from "@/components/Layout";
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 
+import Layout from "@/components/Layout";
 import Post from "@/components/Post";
+import Pagination from "@/components/Pagination";
 
 import { POSTS_PER_PAGE } from "@/config/index";
-import Pagination from "@/components/Pagination";
+import { getPost } from "@/lib/posts";
 
 export default function BlogPage({ posts, numPages, currentPage }) {
   return (
@@ -44,24 +44,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const page = parseInt((params && params.page_index) || 1);
   const files = fs.readdirSync(path.join("posts"));
-  const posts = files.map((filename) => {
-    //remove .md from file names to create a slug
-    const slug = filename.replace(".md", "");
-
-    //Read data in files
-    const markdownWithMeta = fs.readFileSync(
-      path.join("posts", filename), // file path
-      "utf-8"
-    );
-
-    //converting read .md files to json
-    const { data: frontmatter } = matter(markdownWithMeta);
-
-    return {
-      slug,
-      frontmatter,
-    };
-  });
+  const posts = getPost();
 
   const numPages = Math.ceil(files.length / POSTS_PER_PAGE);
   const pageIndex = page - 1;
